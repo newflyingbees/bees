@@ -1,172 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Minimalist</title>
-    <style>
-        /* Base Styling */
-        :root {
-            --bg-color: #0d0d0d; /* Dark background from base site */
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0a0;
-            --accent: #333333;
-        }
+  <meta charset="UTF-8">
+  <title>Minimal Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #CCC7C7;
+      color: #0e0e0e;
+    }
 
-        /* Navigation */
-        nav {
-            display: flex;
-            justify-content: flex-end;
-            padding: 2rem 5%;
-            gap: 2rem;
-        }
+    /* NAVBAR */
+    .nav {
+      position: fixed;
+      top: 20px;
+      right: 40px;
+    }
 
-        nav a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s;
-        }
+    .nav a {
+      margin-left: 20px;
+      color: #0e0e0e;
+      text-decoration: none;
+      font-size: 14px;
+    }
 
-        nav a:hover { color: var(--text-primary); }
+    .nav a:hover {
+      color: #fff;
+    }
 
-        /* Hero Header */
-        header {
-            padding: 4rem 10% 2rem;
-            max-width: 800px;
-        }
+    /* HERO */
+    .hero {
+      height: 60vh;
+      display: flex;
+      align-items: center;
+      padding-left: 80px;
+      font-size: 28px;
+      line-height: 1.4;
+      max-width: 600px;
+    }
 
-        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-        header p { color: var(--text-secondary); font-size: 1.2rem; }
+    /* GRID */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 40px 80px;
+    }
 
-        /* Grid Layout */
-        .container {
-            padding: 2rem 10% 5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
+    .tile {
+      background: #1a1a1a;
+      padding: 40px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-        /* Tile Styling */
-        .tile {
-            background: #1a1a1a;
-            border: 1px solid var(--accent);
-            padding: 2rem;
-            height: 200px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            cursor: pointer;
-            transition: transform 0.2s, border-color 0.3s;
-        }
+    .tile:hover {
+      background: #222;
+      transform: translateY(-5px);
+    }
 
-        .tile:hover {
-            transform: translateY(-5px);
-            border-color: #555;
-        }
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 80%;
+      max-width: 700px;
+      background: #111;
+      padding: 30px;
+      transform: translate(-50%, -50%) scale(0);
+      transition: 0.3s;
+      z-index: 10;
+      border: 1px solid #333;
+    }
 
-        .tile h3 { margin: 0; font-weight: 500; }
-        .tile span { font-size: 0.8rem; color: var(--text-secondary); }
+    .modal.active {
+      transform: translate(-50%, -50%) scale(1);
+    }
 
-        /* Floating Webpage (Modal) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
+    .overlay {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0,0,0,0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+    }
 
-        .modal-content {
-            background: #1a1a1a;
-            width: 90%;
-            max-width: 800px;
-            height: 80vh;
-            padding: 3rem;
-            position: relative;
-            overflow-y: auto;
-            border: 1px solid var(--accent);
-            border-radius: 8px;
-        }
+    .overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
 
-        .close-btn {
-            position: absolute;
-            top: 20px; right: 30px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: var(--text-secondary);
-        }
-    </style>
+    .close {
+      float: right;
+      cursor: pointer;
+      color: #aaa;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#">Work</a>
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-    </nav>
+  <!-- NAV -->
+  <div class="nav">
+    <a href="#">About</a>
+    <a href="#">Work</a>
+    <a href="#">Contact</a>
+  </div>
 
-    <header>
-        <h1>Creative Portfolio</h1>
-        <p>A collection of projects focusing on design, code, and simplicity.</p>
-    </header>
-
-    <div class="container">
-        <div class="tile" onclick="openModal('Project One', 'Detailed description of the first project goes here. You can add images, links, or text.')">
-            <span>Category 01</span>
-            <h3>Project Discovery</h3>
-        </div>
-
-        <div class="tile" onclick="openModal('Project Two', 'This is the floating content for the second project. Super clean and focused.')">
-            <span>Category 02</span>
-            <h3>System Architecture</h3>
-        </div>
-
-        <div class="tile" onclick="openModal('Project Three', 'Details about project three.')">
-            <span>Category 03</span>
-            <h3>Visual Identity</h3>
-        </div>
+  <!-- HERO -->
+  <div class="hero">
+    <div>
+      Crafting simple digital experiences.<br>
+      Focused on clarity, motion, and minimal design.
     </div>
+  </div>
 
-    <div id="projectModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <hr style="border: 0; border-top: 1px solid #333; margin: 1.5rem 0;">
-            <p id="modalBody"></p>
-        </div>
-    </div>
+  <!-- GRID -->
+  <div class="grid">
+    <div class="tile" onclick="openModal('Project One')">Project One</div>
+    <div class="tile" onclick="openModal('Project Two')">Project Two</div>
+    <div class="tile" onclick="openModal('Project Three')">Project Three</div>
+    <div class="tile" onclick="openModal('Project Four')">Project Four</div>
+  </div>
 
-    <script>
-        function openModal(title, text) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalBody').innerText = text;
-            document.getElementById('projectModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Stop scrolling background
-        }
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <span class="close" onclick="closeModal()">✕</span>
+    <h2 id="modal-title"></h2>
+    <p>
+      This is placeholder content. You can describe your project, add links,
+      images, or anything else here.
+    </p>
+  </div>
 
-        function closeModal() {
-            document.getElementById('projectModal').style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scrolling again
-        }
+  <div class="overlay" id="overlay" onclick="closeModal()"></div>
 
-        // Close if user clicks outside the content box
-        window.onclick = function(event) {
-            let modal = document.getElementById('projectModal');
-            if (event.target == modal) closeModal();
-        }
-    </script>
+  <script>
+    function openModal(title) {
+      document.getElementById("modal-title").innerText = title;
+      document.getElementById("modal").classList.add("active");
+      document.getElementById("overlay").classList.add("active");
+    }
+
+    function closeModal() {
+      document.getElementById("modal").classList.remove("active");
+      document.getElementById("overlay").classList.remove("active");
+    }
+  </script>
+
 </body>
 </html>
