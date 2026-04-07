@@ -1,163 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Minimal Portfolio</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | 4-Column Masonry</title>
+    <style>
+        :root {
+            --bg-color: #CCC7C7;
+            --text-primary: #0e0e0e;
+            --text-secondary: #4a4a4a;
+            --border-normal: #ffffff;
+            --border-hover: #00ffff; /* Fluorescent Blue */
+        }
 
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #CCC7C7;
-      color: #0e0e0e;
-    }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centers the header and container */
+        }
 
-    /* NAVBAR */
-    .nav {
-      position: fixed;
-      top: 20px;
-      right: 40px;
-    }
+        /* Navigation */
+        nav {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 40px 15% 0; /* Large side padding */
+            box-sizing: border-box;
+            gap: 30px;
+        }
 
-    .nav a {
-      margin-left: 20px;
-      color: #0e0e0e;
-      text-decoration: none;
-      font-size: 14px;
-    }
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
 
-    .nav a:hover {
-      color: #fff;
-    }
+        /* Hero Header - Centered with large side margins */
+        header {
+            width: 70%; /* Constrains width to create large side space */
+            padding: 100px 0 60px;
+            text-align: left;
+        }
 
-    /* HERO */
-    .hero {
-      height: 60vh;
-      display: flex;
-      align-items: center;
-      padding-left: 80px;
-      font-size: 28px;
-      line-height: 1.4;
-      max-width: 600px;
-    }
+        header h1 { 
+            font-size: 2.8rem; 
+            margin: 0 0 20px 0; 
+            font-weight: 400;
+            line-height: 1.2;
+        }
 
-    /* GRID */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 40px 80px;
-    }
+        /* Tiles Container - 4 Columns */
+        .masonry-grid {
+            width: 70%; /* Matching header width for alignment */
+            column-count: 4;
+            column-gap: 20px;
+            padding-bottom: 100px;
+        }
 
-    .tile {
-      background: #1a1a1a;
-      padding: 40px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+        /* Responsive Columns */
+        @media (max-width: 1200px) { .masonry-grid { column-count: 3; width: 85%; } header { width: 85%; } }
+        @media (max-width: 900px) { .masonry-grid { column-count: 2; } }
+        @media (max-width: 600px) { .masonry-grid { column-count: 1; } }
 
-    .tile:hover {
-      background: #222;
-      transform: translateY(-5px);
-    }
+        /* Tile Styling */
+        .tile {
+            break-inside: avoid;
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.2); /* Slight glass effect */
+            border: 2px solid var(--border-normal);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-sizing: border-box;
+        }
 
-    /* MODAL */
-    .modal {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      width: 80%;
-      max-width: 700px;
-      background: #111;
-      padding: 30px;
-      transform: translate(-50%, -50%) scale(0);
-      transition: 0.3s;
-      z-index: 10;
-      border: 1px solid #333;
-    }
+        .tile:hover {
+            border-color: var(--border-hover);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.15);
+        }
 
-    .modal.active {
-      transform: translate(-50%, -50%) scale(1);
-    }
+        /* Height Variations */
+        .h-1 { min-height: 200px; }
+        .h-2 { min-height: 300px; }
+        .h-3 { min-height: 400px; }
+        .h-4 { min-height: 250px; }
 
-    .overlay {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      background: rgba(0,0,0,0.7);
-      opacity: 0;
-      pointer-events: none;
-      transition: 0.3s;
-    }
+        .tile span { 
+            font-size: 11px; 
+            text-transform: uppercase; 
+            letter-spacing: 1.5px; 
+            color: var(--text-secondary);
+        }
 
-    .overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+        .tile h3 { 
+            margin: 10px 0 0; 
+            font-size: 1.2rem; 
+            font-weight: 500; 
+        }
 
-    .close {
-      float: right;
-      cursor: pointer;
-      color: #aaa;
-    }
+        /* Modal styling remains largely the same for functionality */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 1000;
+        }
 
-    .close:hover {
-      color: #fff;
-    }
-  </style>
+        .modal-content {
+            margin: 10% auto;
+            width: 60%;
+            max-width: 800px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 40px; right: 15%;
+            font-size: 40px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <div class="nav">
-    <a href="#">About</a>
-    <a href="#">Work</a>
-    <a href="#">Contact</a>
-  </div>
+    <nav>
+        <a href="#">Works</a>
+        <a href="#">About</a>
+    </nav>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div>
-      Crafting simple digital experiences.<br>
-      Focused on clarity, motion, and minimal design.
+    <header>
+        <h1>A digital playground for modern aesthetics.</h1>
+        <p>Exploring the intersection of code and visual balance.</p>
+    </header>
+
+    <div class="masonry-grid" id="tileContainer"></div>
+
+    <div id="projectModal" class="modal">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalBody"></p>
+        </div>
     </div>
-  </div>
 
-  <!-- GRID -->
-  <div class="grid">
-    <div class="tile" onclick="openModal('Project One')">Project One</div>
-    <div class="tile" onclick="openModal('Project Two')">Project Two</div>
-    <div class="tile" onclick="openModal('Project Three')">Project Three</div>
-    <div class="tile" onclick="openModal('Project Four')">Project Four</div>
-  </div>
+    <script>
+    // 1. DATA SECTION: Just add a new line here every day
+    const myProjects = [
+        { 
+        title: "Project 01", 
+        category: "Development", 
+        content: "Power BI has a unique way to overlap charts one over the other by using a simple technique - hyperlink...", 
+        size: "h-3",
+        image: "https://wowslider.com/sliders/demo-87/data1/images/landscape404072_1280.jpg" // Add this line
+    },
+        { title: "Day 995: New Bees", category: "New Build", content: "This is the text that appears when the tile is clicked.", size: "h-2",
+          image:"https://wowslider.com/sliders/demo-31/data1/images/bench560435.jpg" },
+        { title: "Project 01", category: "Development", content: "Details for day 1...", size: "h-3" },
+        { title: "Project 02", category: "Design", content: "Details for day 2...", size: "h-1" },
+        { title: "Project 03", category: "Concept", content: "Details for day 3...", size: "h-4" },
+        { title: "Project 04", category: "Archive", content: "Details for day 4...", size: "h-2" },
+        { title: "Day 05: New Concept", category: "Daily Build", content: "This is the text that appears when the tile is clicked.", size: "h-2" },
+        // To add a new one, just copy the line below and paste it:
+        // { title: "New Tile", category: "Daily", content: "Fresh content here", size: "h-1" },
+    ];
 
-  <!-- MODAL -->
-  <div class="modal" id="modal">
-    <span class="close" onclick="closeModal()">✕</span>
-    <h2 id="modal-title"></h2>
-    <p>
-      This is placeholder content. You can describe your project, add links,
-      images, or anything else here.
-    </p>
-  </div>
+    // 2. LOGIC SECTION: This builds the tiles automatically
+    const container = document.getElementById('tileContainer');
 
-  <div class="overlay" id="overlay" onclick="closeModal()"></div>
+    function renderTiles() {
+    container.innerHTML = ""; 
+    myProjects.forEach((project) => {
+        const tile = document.createElement('div');
+        tile.className = `tile ${project.size}`;
+        tile.onclick = () => openModal(project.title, project.content);
+        
+        // This is the updated part:
+        tile.innerHTML = `
+            <img src="${project.image}" alt="${project.title}" style="width:100%; border-radius:4px; margin-bottom:15px; filter: grayscale(100%);">
+            <span>${project.category}</span>
+            <h3>${project.title}</h3>
+        `;
+        container.appendChild(tile);
+    });
+}
 
-  <script>
-    function openModal(title) {
-      document.getElementById("modal-title").innerText = title;
-      document.getElementById("modal").classList.add("active");
-      document.getElementById("overlay").classList.add("active");
+    // Modal Functions
+    function openModal(title, text) {
+        document.getElementById('modalTitle').innerText = title;
+        document.getElementById('modalBody').innerText = text;
+        document.getElementById('projectModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
     }
 
     function closeModal() {
-      document.getElementById("modal").classList.remove("active");
-      document.getElementById("overlay").classList.remove("active");
+        document.getElementById('projectModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
-  </script>
 
+    // Run the render on page load
+    renderTiles();
+</script>
 </body>
 </html>
