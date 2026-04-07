@@ -44,17 +44,26 @@
 
         /* Hero Header - Centered with large side margins */
         header {
-            width: 70%; /* Constrains width to create large side space */
-            padding: 100px 0 60px;
-            text-align: left;
+            width: 70%; /* Keeps the container centered with large side margins */
+            padding: 100px 0 60px; 
+            margin: 0 auto; /* This centers the header container itself */
+            text-align: center; /* This centers the text inside the header */
         }
 
         header h1 { 
             font-size: 2.8rem; 
-            margin: 0 0 20px 0; 
+            margin: 0 auto 20px; /* Centered margin */ 
             font-weight: 400;
             line-height: 1.2;
+            max-width: 800px; /* Prevents the text from getting too wide */
         }
+
+        header p { 
+           color: var(--text-secondary); 
+            font-size: 1.2rem; 
+            margin: 0 auto; /* Centers the paragraph text block */
+            max-width: 600px; /* Keeps the sub-text neatly tucked in the middle */
+}
 
         /* Tiles Container - 4 Columns */
         .masonry-grid {
