@@ -116,6 +116,7 @@
             margin: 10px 0 0; 
             font-size: 1.2rem; 
             font-weight: 500; 
+            display: none;
         }
 
         .tile img {
@@ -224,7 +225,7 @@
             // Pass the whole project object to the open function
             tile.onclick = () => openModal(project);
             
-            tile.innerHTML = `
+        tile.innerHTML = `
                 <img src="${project.image}" alt="${project.title}">
                 <span>${project.category}</span>
                 <h3>${project.title}</h3>
